@@ -1,16 +1,14 @@
-# Déveloeppment
-On utilisera le serveur web intégré avec la commandes uivante : 
+# Development 
+We will use the integrated server with the following command:
 ```
 export FLASK_ENV=development
 export FLASK_APP=main.py
 flask run 
 ```
+The API will be available at http://127.0.0.1:5000/countries to fetch all countries.
+We can also fetch only one country with :  http://127.0.0.1:5000/country/1
 
-L'API est alors consultable à l'adresse http://127.0.0.1:5000/countries pour un simple GET. 
-
-On peut également consulter un pays en particulier :  http://127.0.0.1:5000/country/1
-
-Et ajouter un pays (bash) : 
+Or add a country in bash:
 ``` 
 curl -i http://127.0.0.1:5000/countries \
 -X POST \
@@ -18,9 +16,9 @@ curl -i http://127.0.0.1:5000/countries \
 -d '{"name":"Germany", "capital": "Berlin", "area": 357022}'
 ```
 
-# Déploiement 
-Pour le déploiement, on utilisera un vraie serveur web tel que gunicorn. Il est alors conseillé de le 
-faire fonctionner avec Nginx.
+# Deployment 
+For the deployment, we will use a real web server such as gunicorn. It is then advised to 
+to run it with Nginx.
 ```
 gunicorn -w 4 -b 127.0.0.1:4000 main:app
 ```

@@ -1,11 +1,9 @@
-# app.py
-from markupsafe import escape
-
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# on définit en dur nos données
+# Our data
+# todo write in file
 countries = [
     {"id": 1, "name": "Thailand", "capital": "Bangkok", "area": 513120},
     {"id": 2, "name": "Australia", "capital": "Canberra", "area": 7617930},
@@ -17,14 +15,16 @@ def _find_next_id():
     return max(country["id"] for country in countries) + 1
 
 
+# define our route with a decorator
 @app.route("/countries", methods=["GET"])
 def get_countries():
+    # return as json
     return jsonify(countries)
 
 
 @app.route("/country/<int:id>", methods=["GET"])
 def get_country(id):
-    ret = countries[id-1] if id < len(countries) else None
+    ret = countries[id - 1] if id < len(countries) else None
     return jsonify(ret)
 
 

@@ -4,6 +4,7 @@ use std::fs;
 
 #[get("/countries")]
 async fn find_all_countries() -> impl Responder {
+    // read from file, our "database"
     let data = fs::read_to_string("data.txt").unwrap();
     let countries: Vec<Country> = serde_json::from_str(&data).unwrap();
 
@@ -37,6 +38,7 @@ async fn create_country(country: web::Json<Country>) -> impl Responder {
     HttpResponse::Ok().body(format!("Country created: {}\n", country.name))
 }
 
+//register the routes
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(find_all_countries);
     cfg.service(find_country);
