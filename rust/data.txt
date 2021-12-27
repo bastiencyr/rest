@@ -1,0 +1,1 @@
+[{"id":0,"name":"Thailand","capital":"Bangkok","area":513120},{"id":1,"name":"Australia","capital":"Canberra","area":7617930},{"id":2,"name":"Egypt","capital":"Cairo","area":1010408},{"id":3,"name":"France","capital":"Paris","area":10}]
