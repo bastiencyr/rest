@@ -1,38 +1,34 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 
 app = Flask(__name__)
-
-# Our data
-# todo write in file
-countries = [
-    {"id": 1, "name": "Thailand", "capital": "Bangkok", "area": 513120},
-    {"id": 2, "name": "Australia", "capital": "Canberra", "area": 7617930},
-    {"id": 3, "name": "Egypt", "capital": "Cairo", "area": 1010408},
-]
-
-
-def _find_next_id():
-    return max(country["id"] for country in countries) + 1
 
 
 # define our route with a decorator
 @app.route("/countries", methods=["GET"])
 def get_countries():
+    f = json.load(open("data.txt"))
     # return as json
-    return jsonify(countries)
+    return jsonify(f)
 
 
 @app.route("/country/<int:id>", methods=["GET"])
 def get_country(id):
-    ret = countries[id - 1] if id < len(countries) else None
+    f = json.load(open("data.txt"))
+    ret = f[id - 1] if id < len(f) else None
     return jsonify(ret)
 
 
-@app.route("/countries", methods=["POST"])
+@app.route("/country", methods=["POST"])
 def add_country():
+    with open("data.txt", mode="r") as file:
+        data = json.load(file)
+
+    data_file_w = open("data.txt", mode="w")
     if request.is_json:
         country = request.get_json()
-        country["id"] = _find_next_id()
-        countries.append(country)
+        country["id"] = len(data)
+        data.append(country)
+        data_file_w.write(json.dumps(data))  # convert to string
+        data_file_w.close()
         return country, 201
     return {"error": "Request must be JSON"}, 415

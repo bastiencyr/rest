@@ -3,3 +3,9 @@ venv
 target
 .idea
 *~
+wrk
+
+
+# Added by cargo
+
+/target
