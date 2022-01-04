@@ -6,15 +6,17 @@ app = Flask(__name__)
 # define our route with a decorator
 @app.route("/countries", methods=["GET"])
 def get_countries():
-    f = json.load(open("data.txt"))
+    with open("data.txt") as file:
+        file_json = json.load(file)
     # return as json
-    return jsonify(f)
+    return jsonify(file_json)
 
 
 @app.route("/country/<int:id>", methods=["GET"])
 def get_country(id):
-    f = json.load(open("data.txt"))
-    ret = f[id - 1] if id < len(f) else None
+    with open("data.txt") as file:
+        file_json = json.load(file)
+        ret = file_json[id - 1] if id < len(file_json) else None
     return jsonify(ret)
 
 
