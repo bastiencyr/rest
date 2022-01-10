@@ -6,6 +6,7 @@ import (
 )
 
 func setupRoutes(app *fiber.App) {
+	app.Post("/country", country.PostCountry)
 	app.Get("/countries", country.GetCountries)
 	app.Get("/country/:id", country.GetCountry)
 }

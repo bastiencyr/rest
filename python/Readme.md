@@ -10,7 +10,7 @@ We can also fetch only one country with :  http://127.0.0.1:5000/country/1
 
 Or add a country in bash:
 ``` 
-curl -i http://127.0.0.1:5000/countries \
+curl -i http://127.0.0.1:5000/country \
 -X POST \
 -H 'Content-Type: application/json' \
 -d '{"name":"Germany", "capital": "Berlin", "area": 357022}'

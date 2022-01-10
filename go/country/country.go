@@ -2,7 +2,7 @@ package country
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"github.com/gofiber/fiber/v2"
 	"io/ioutil"
 	"strconv"
@@ -25,40 +25,32 @@ func DefaultCountry() *Country {
 	}
 }
 
+func errNotModified(err error, c *fiber.Ctx) error {
+	if err != nil {
+		log.Printf("Ressource Not Modfied: %s", err)
+	}
+	return c.SendStatus(304)
+}
+
+
 func GetCountries(c *fiber.Ctx) error {
 	// read file
-	data, err := ioutil.ReadFile("./data.txt")
-	if err != nil {
-		fmt.Print(err)
-	}
-
+	data, _ := ioutil.ReadFile("./data.txt")
 	// json data
 	var Countries2 []Country
-
 	// unmarshall it
-	err = json.Unmarshal(data, &Countries2)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
+	json.Unmarshal(data, &Countries2)
 
 	return c.JSON(Countries2)
 }
 
 func GetCountry(c *fiber.Ctx) error {
 	// read file
-	data, err := ioutil.ReadFile("./data.txt")
-	if err != nil {
-		fmt.Print(err)
-	}
-
+	data, _ := ioutil.ReadFile("./dta.txt")
 	// json data
 	var Countries2 []Country
-
 	// unmarshall it
-	err = json.Unmarshal(data, &Countries2)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
+	json.Unmarshal(data, &Countries2)
 
 	i, err := strconv.Atoi(c.Params("id"))
 
@@ -67,4 +59,32 @@ func GetCountry(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(DefaultCountry())
+}
+
+func PostCountry(c *fiber.Ctx) error {
+	p := new(Country)
+        c.BodyParser(p)
+	
+	//read the file and add the new country
+	data, err := ioutil.ReadFile("./data.txt")
+	return errNotModified(err, c)
+
+	// json data
+	var Countries2 []Country
+
+	// unmarshall it
+	err = json.Unmarshal(data, &Countries2)
+	return errNotModified(err, c)
+	p.Id = len(Countries2)
+	
+	Countries2 = append(Countries2, *p)
+	
+        // marshall it
+	data, err = json.Marshal(Countries2)
+	return errNotModified(err, c)
+
+	ioutil.WriteFile("./data.txt", data, 0644) 
+
+	// Data has been posted
+	return c.SendStatus(201)
 }

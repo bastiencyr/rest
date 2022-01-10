@@ -1,5 +1,5 @@
 # Installation
-We suppose that cargo is already installed on the machine.
+We assume that cargo is already installed on the machine.
 Then run the command (long the first time):
 ```bash
 cargo run
