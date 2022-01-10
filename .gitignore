@@ -4,7 +4,7 @@ target
 .idea
 *~
 wrk
-
+server
 
 # Added by cargo
 

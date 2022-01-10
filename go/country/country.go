@@ -46,7 +46,7 @@ func GetCountries(c *fiber.Ctx) error {
 
 func GetCountry(c *fiber.Ctx) error {
 	// read file
-	data, _ := ioutil.ReadFile("./dta.txt")
+	data, _ := ioutil.ReadFile("./data.txt")
 	// json data
 	var Countries2 []Country
 	// unmarshall it
