@@ -1,6 +1,8 @@
-use crate::country::Country;
-use actix_web::{get, post, web, HttpResponse, Responder};
 use std::fs;
+
+use actix_web::{get, post, web, HttpResponse, Responder};
+
+use crate::country::Country;
 
 #[get("/countries")]
 async fn find_all_countries() -> impl Responder {
