@@ -1282,13 +1282,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust"
+name = "rest"
 version = "0.1.0"
 dependencies = [
  "actix-web",
  "clap",
  "env_logger",
  "listenfd",
+ "log",
  "serde",
  "serde_json",
 ]

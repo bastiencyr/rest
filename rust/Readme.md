@@ -29,4 +29,8 @@ country: http://127.0.0.1:5001/country/1
 
 # Deployment
 
-Use systemd with Nginx. No need to take a specific web server.
+Use for example systemd with Nginx. An example of configuration is available in "deployment/systemd". Your server will
+run on 127.0.0.1:8000 and the service will listen on /run/rest.sock socket. Nginx redirects connections 
+to /run/rest.sock. 
+You have to create a specific user for this service before. For example, rest-api user. This user doesn't need any root 
+access. 

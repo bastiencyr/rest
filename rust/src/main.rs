@@ -18,19 +18,23 @@ async fn main() -> std::io::Result<()> {
         .author("Bastien")
         .about("Simple rest API in Rust")
         .arg(
-            Arg::new("socket")
-                .long("socket")
+            Arg::new("address")
+                .long("addr")
                 .short('s')
                 .help(
-                    "The socket to run the server. For TCP socket: 127.0.0.1:5000. \
-        Unix socket are not supported",
+                    "The socket to run the server. For TCP socket: 127.0.0.1:5000.\
+                    Unix socket are not supported.",
                 )
                 .default_value("127.0.0.1:5000")
                 .value_name("SOCKET"),
         )
         .arg(
             Arg::new("systemd_unix")
-                .help("Get socket from systemd thanks to sd_listen_fds()")
+                .help(
+                    "Get socket from systemd thanks to sd_listen_fds(). You must configure \
+                a service and a socket in systemd. Please refer to the example in \
+                deployment/systemd.",
+                )
                 .takes_value(false),
         )
         .get_matches();
@@ -49,13 +53,14 @@ async fn main() -> std::io::Result<()> {
     }
 
     // Finish by socket argument since socket arg has a default value
-    if let Some(c) = matches.value_of("socket") {
+    if let Some(c) = matches.value_of("address") {
         let sock: Vec<&str> = c.split(":").collect();
-        if sock.len() == 2 {
-            return server.bind(c)?.run().await;
+        return if sock.len() == 2 {
+            server.bind(c)?.run().await
         } else {
-            panic!("Fail to parse given URL. Unix socket URL are not supported : you can use systemd_unix as a workaround.")
-        }
+            log::error!("Fail to parse given URL. Unix socket URL are not supported : you can use systemd_unix as a workaround.");
+            Result::Ok(())
+        };
     }
 
     return server.bind("127.0.0.1:8000")?.run().await;
