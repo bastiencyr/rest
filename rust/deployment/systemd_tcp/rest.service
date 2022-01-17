@@ -1,0 +1,26 @@
+[Unit]
+Description=actix daemon
+Requires=actix.socket
+After=network.target
+
+[Service]
+Type=simple
+# the specific user that our service will run as
+# You must create this user !
+User=rest-api
+Group=rest-api
+# another option for an even more restricted service is
+# DynamicUser=yes
+# see http://0pointer.net/blog/dynamic-users-with-systemd.html
+Environment="RUST_LOG=info"
+RuntimeDirectory=actix
+WorkingDirectory=/path_to_the_project/rest/rust
+ExecStart=/path_to_the_project/rest/rust/target/release/rust systemd_unix
+
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=2
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

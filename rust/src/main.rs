@@ -5,6 +5,7 @@ use std::os::unix::prelude::FromRawFd;
 mod country;
 
 use clap::Arg;
+use listenfd::ListenFd;
 
 fn get_unix_listener() -> UnixListener {
     return unsafe { UnixListener::from_raw_fd(3) };
@@ -30,10 +31,23 @@ async fn main() -> std::io::Result<()> {
         )
         .arg(
             Arg::new("systemd_unix")
+                .long("systemd_unix")
                 .help(
-                    "Get socket from systemd thanks to sd_listen_fds(). You must configure \
+                    "Get a unix socket only from systemd thanks to sd_listen_fds(). \
+                    You must configure \
                 a service and a socket in systemd. Please refer to the example in \
-                deployment/systemd.",
+                deployment/systemd_unix.",
+                )
+                .takes_value(false),
+        )
+        .arg(
+            Arg::new("systemd_tcp")
+                .long("systemd_tcp")
+                .help(
+                    "Get a tcp socket only from systemd thanks to sd_listen_fds(). \
+                    You must configure \
+                a service and a socket in systemd. Please refer to the example in \
+                deployment/systemd_tcp.",
                 )
                 .takes_value(false),
         )
@@ -41,24 +55,33 @@ async fn main() -> std::io::Result<()> {
 
     let server = HttpServer::new(|| App::new().configure(country::init_routes)).workers(4);
 
-    if let Some(_) = matches.value_of("systemd_unix") {
+    if matches.is_present("systemd_unix") {
+        log::info!("Systemd unix socket option.");
         // in systemd, the socket use the first available file descriptor -> 3
         let lst = get_unix_listener();
         return server.listen_uds(lst)?.run().await;
 
-        // another method with listenfd
-        //use listenfd::ListenFd;
-        //let mut listenfd = ListenFd::from_env();
-        //let lst = listenfd.take_unix_listener(0).unwrap().unwrap();
+        // another method is to use listenfd (see bellow)
+    }
+
+    if matches.is_present("systemd_tcp") {
+        log::info!("Systemd TCP socket option.");
+        let mut listenfd = ListenFd::from_env();
+        let lst = listenfd.take_tcp_listener(0).unwrap().unwrap();
+        return server.listen(lst)?.run().await;
     }
 
     // Finish by socket argument since socket arg has a default value
     if let Some(c) = matches.value_of("address") {
+        log::info!("Standalone TCP socket option.");
         let sock: Vec<&str> = c.split(":").collect();
         return if sock.len() == 2 {
             server.bind(c)?.run().await
         } else {
-            log::error!("Fail to parse given URL. Unix socket URL are not supported : you can use systemd_unix as a workaround.");
+            log::error!(
+                "Fail to parse given URL. Unix socket URL are not supported : you can use \
+            systemd_unix as a workaround."
+            );
             Result::Ok(())
         };
     }

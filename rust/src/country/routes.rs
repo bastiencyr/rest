@@ -4,6 +4,15 @@ use actix_web::{get, post, web, HttpResponse, Responder};
 
 use crate::country::Country;
 
+#[get("/")]
+async fn home() -> impl Responder {
+    // read from file, our "database"
+    let mut country = Country::default();
+    country.name = String::from("Hello");
+    country.capital = String::from("World!");
+    HttpResponse::Ok().json(vec![country])
+}
+
 #[get("/countries")]
 async fn find_all_countries() -> impl Responder {
     // read from file, our "database"
@@ -41,6 +50,7 @@ async fn create_country(country: web::Json<Country>) -> impl Responder {
 
 //register the routes
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(home);
     cfg.service(find_all_countries);
     cfg.service(find_country);
     cfg.service(create_country);
