@@ -1,0 +1,24 @@
+[Unit]
+Description=rest-py daemon
+Requires=rest-py.socket
+After=network.target
+
+[Service]
+Type=notify
+# the specific user that our service will run as
+User=rest-api
+Group=rest-api
+# another option for an even more restricted service is
+# DynamicUser=yes
+# see http://0pointer.net/blog/dynamic-users-with-systemd.html
+RuntimeDirectory=gunicorn
+WorkingDirectory=/path_to_the_project/rest/python
+ExecStart=/usr/bin/gunicorn -w 4 -b unix:/run/rest-py.sock main:app
+
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

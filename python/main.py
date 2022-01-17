@@ -4,6 +4,14 @@ app = Flask(__name__)
 
 
 # define our route with a decorator
+
+@app.route("/", methods=["GET"])
+def home():
+    # return as json
+    country = [{"id": 0, "area": 0, "name": "Hello", "capital": "World!"}]
+    return jsonify(country)
+
+
 @app.route("/countries", methods=["GET"])
 def get_countries():
     with open("data.txt") as file:
