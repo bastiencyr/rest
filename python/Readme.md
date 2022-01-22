@@ -39,7 +39,9 @@ gunicorn -w 4 -b 127.0.0.1:4000 main:app
 
 ## Systemd integration, unix socket
 Use for example systemd with Nginx. An example of configuration for nginx and systemd is available in 
-"deployment/systemd_unix". Nginx will listen to 127.0.0.1:8000 and redirect connections to /run/rest.sock. You can change 
+"deployment/systemd_unix". You have a Readme to install this project with nginx and systemd.
+
+Nginx will listen to 127.0.0.1:8000 and redirect connections to /run/rest.sock. You can change 
 the address and the port in the nginx configuration. 
 You must set WorkingDirectory, User and Group in the service systemd file to get the service working.
 
