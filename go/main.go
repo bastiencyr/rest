@@ -19,5 +19,5 @@ func main() {
 		ServerHeader:  "Fiber",
 	})
 	setupRoutes(app)
-	app.Listen(":5002")
+	app.Listen(":5000")
 }

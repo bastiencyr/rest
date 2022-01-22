@@ -2,9 +2,7 @@
 Description=actix socket
 
 [Socket]
-ListenStream=127.0.0.1:5000
-# Don't forget to set FreeBind to true for tcp socket !
-FreeBind=true
+ListenStream=/run/rest-rs.sock
 # Our service won't need permissions for the socket, since it
 # inherits the file descriptor by socket activation
 # only the nginx daemon will need access to the socket

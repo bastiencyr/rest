@@ -1,11 +1,11 @@
 [Unit]
 Description=actix daemon
-Requires=actix.socket
+Requires=rest-rs.socket
 After=network.target
 
 [Service]
 Type=simple
-# the specific user that our service will run as
+# The specific user that our service will run as
 # You must create this user !
 User=rest-api
 Group=rest-api

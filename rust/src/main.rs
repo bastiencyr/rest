@@ -53,7 +53,7 @@ async fn main() -> std::io::Result<()> {
         )
         .get_matches();
 
-    let server = HttpServer::new(|| App::new().configure(country::init_routes)).workers(4);
+    let server = HttpServer::new(|| App::new().configure(country::init_routes)).workers(1);
 
     if matches.is_present("systemd_unix") {
         log::info!("Systemd unix socket option.");

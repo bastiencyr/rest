@@ -1,6 +1,6 @@
 [Unit]
 Description=actix daemon
-Requires=actix.socket
+Requires=rest-rs.socket
 After=network.target
 
 [Service]
