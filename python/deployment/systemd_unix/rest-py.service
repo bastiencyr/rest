@@ -4,7 +4,12 @@ Requires=rest-py.socket
 After=network.target
 
 [Service]
+# Type=notify is only supported on Gunicorn >= 20 which is only available starting from Debian 11
+# Debian >= 11
 Type=notify
+# For Debian <= 10
+# Type = exec
+
 # the specific user that our service will run as
 User=rest-api
 Group=rest-api
