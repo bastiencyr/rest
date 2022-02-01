@@ -15,7 +15,7 @@ Group=rest-api
 Environment="RUST_LOG=info"
 RuntimeDirectory=actix
 WorkingDirectory=/path_to_the_project/rest/rust
-ExecStart=/path_to_the_project/rest/rust/target/release/rust systemd_unix
+ExecStart=/path_to_the_project/rest/rust/target/release/rest --systemd_unix
 
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed

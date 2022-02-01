@@ -42,7 +42,7 @@ Then:
 ```bash
 # Enable the services
 sudo systemctl enable rest-py.socket
-sudo syemctl enable rest-py.service
+sudo systemctl enable rest-py.service
 
 # start the services
 sudo systemctl start rest-py.socket

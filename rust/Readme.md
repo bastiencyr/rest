@@ -22,6 +22,9 @@ You can change the listening port with:
 ```
 cargo run -- --addr 127.0.0.1:5003
 ```
+# Build the doc
+To build doc without dependencies doc, run `cargo doc --open --no-deps`. 
+It will open doc on your browser. 
 
 # Development
 

@@ -48,7 +48,6 @@ async fn create_country(country: web::Json<Country>) -> impl Responder {
     HttpResponse::Ok().body(format!("Country created: {}\n", country.name))
 }
 
-//register the routes
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(home);
     cfg.service(find_all_countries);
